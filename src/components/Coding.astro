@@ -1,0 +1,52 @@
+---
+import EleventyFetch from "@11ty/eleventy-fetch";
+interface Language {
+    name: string;
+    percent: number;
+    text: string;
+}
+interface CodingStats {
+    human_readable_total: string;
+    human_readable_daily_average: string;
+    languages: Array<Language>
+}
+interface Response {
+    data?: CodingStats
+}
+const token = import.meta.env.WAKATIME_TOKEN
+async function fetchStats() {
+    let response: Response = await EleventyFetch(`https://wakatime.com/api/v1/users/current/stats`, {
+            duration: "1h",
+            type: "json",
+            fetchOptions: {
+            headers: {
+                "Authorization": "Basic " + token,
+            },
+        },
+    });
+    try {
+        if (response.data) {
+            let stats: CodingStats = response.data;
+            let newLanguages = stats.languages.slice(0,3);
+            stats.languages = newLanguages;
+            return stats
+        } else {
+            return { human_readable_total: "? min", human_readable_daily_average: "? min", languages: [ { name: "Javascript", text: "? min", percent: 50 } ] }
+        }
+    } catch (err) {
+        console.log(err)
+        return { human_readable_total: "? min", human_readable_daily_average: "? min", languages: [ { name: "Javascript", text: "? min", percent: 50 } ] }
+    }
+    
+}
+let stats = await fetchStats();
+---
+
+<p>Last 7 days: <strong>{stats.human_readable_total}</strong></p>
+<p>Daily average: <strong>{stats.human_readable_daily_average}</strong></p>
+<strong>Languages:</strong>
+<ul>
+    {stats.languages.map((lang) => {
+        return (<li>{lang.name}: {lang.text} ({lang.percent}%)</li>)
+    })}
+</ul>

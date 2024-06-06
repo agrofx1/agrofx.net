@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Projects from '../components/Projects.astro';
+import Coding from '../components/Coding.astro';
+---
+
+<Layout title="Agrofx homepage" description='The Agrofx personal website'>
+	<header>
+		<h2>agrofx</h2>
+		<div class="header__buttons">
+			<a class="header__button" href="https://github.com/agrofx1">github</a>
+		</div>
+	</header>
+	<main>
+		<p>Hi there, I'm <strong>Agrofx</strong>. I like <strong>programming</strong> and <strong>building things</strong>.
+		Besides that, I love <strong>Open Source</strong> and the idea of <strong>free software</strong></p>
+		<h2><strong>Projects</strong></h2>
+		<div class="projects__list">
+			<Projects />
+		</div>
+		<h2><strong>Coding statistic (last 7 days)</strong></h2>
+		<div class="">
+			<Coding />
+		</div>
+	</main>
+</Layout>

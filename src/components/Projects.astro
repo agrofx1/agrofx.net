@@ -1,0 +1,36 @@
+---
+interface Project {
+    name?: string;
+    description?:string;
+    html_url?:string;
+}
+
+import EleventyFetch from "@11ty/eleventy-fetch";
+const token = import.meta.env.GITHUB_TOKEN
+async function fetchProjects() {
+    let response: Project[] = await EleventyFetch(`https://api.github.com/user/repos?type=public`, {
+            duration: "1h",
+            type: "json",
+            fetchOptions: {
+            headers: {
+                "Authorization": "Bearer " + token,
+            },
+        },
+    });
+    try {
+        let projects: Project[] = response;
+        return projects
+    } catch (err) {
+        console.log(err)
+        return []
+    }
+    
+}
+let projects = await fetchProjects();
+---
+{projects.map((project) => (
+    <div class="projects__project">
+        <a href={project.html_url}>{project.name}</a>
+        <p>{project.description}</p>
+    </div>
+))}
