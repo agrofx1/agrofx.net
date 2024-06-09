@@ -10,12 +10,9 @@ interface CodingStats {
     human_readable_daily_average: string;
     languages: Array<Language>
 }
-interface Response {
-    data?: CodingStats
-}
 const token = import.meta.env.WAKATIME_TOKEN
 async function fetchStats() {
-    let response: Response = await EleventyFetch(`https://wakatime.com/api/v1/users/current/stats`, {
+    let response = await EleventyFetch(`https://wakatime.com/api/v1/users/current/stats`, {
             duration: "1h",
             type: "json",
             fetchOptions: {

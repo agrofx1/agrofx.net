@@ -8,7 +8,7 @@ interface Project {
 import EleventyFetch from "@11ty/eleventy-fetch";
 const token = import.meta.env.GITHUB_TOKEN
 async function fetchProjects() {
-    let response: Project[] = await EleventyFetch(`https://api.github.com/user/repos?type=public`, {
+    let response = await EleventyFetch(`https://api.github.com/user/repos?type=public`, {
             duration: "1h",
             type: "json",
             fetchOptions: {
