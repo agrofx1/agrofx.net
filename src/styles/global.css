@@ -53,6 +53,15 @@ strong {
     align-items: center;
     font-family: 'Switzer Light';
 }
+.footer__icons {
+    display: flex;
+    justify-content: center;
+}
+.footer__icon {
+    height: 1.3rem;
+    width: 1.3rem;
+    padding: .5rem;
+}
 
 @media (hover: hover) {
     a:hover {

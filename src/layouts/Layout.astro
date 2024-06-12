@@ -1,6 +1,10 @@
 ---
 import "../styles/global.css"
 import "../styles/fonts.css"
+import { Image } from "astro:assets";
+import github from "../icons/github.svg";
+import telegram from "../icons/telegram.svg";
+import discord from "../icons/discord.svg";
 
 interface Props {
 	title: string;
@@ -22,7 +26,7 @@ const { title, description } = Astro.props;
 		<meta property="og:title" content={title} />
 		<meta property="og:site_name" content="Agrofx" />
 		<meta property="og:url" content="https://agrofx.net/" />
-		<meta property="og:image" content="https://ia.media-imdb.com/images/rock.jpg" />
+		<meta property="og:image" content="https://agrofx.net/" />
 		<!-- style -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{title}</title>
@@ -33,9 +37,11 @@ const { title, description } = Astro.props;
 	<footer>
 		<hr>
 		<div class="footer__content">
-			<h4>Agrofx</h4>
+			<h4>Agrofx</h4>	
 			<div class="footer__icons">
-
+				<a href="https://github.com/agrofx1"><Image class="footer__icon" src={github} alt="Github" /></a>
+				<a href="https://t.me/agrofxtg"><Image class="footer__icon" src={telegram} alt="Telegram" /></a>
+				<a href="https://discord.gg/bdtUgVp4"><Image class="footer__icon" src={discord} alt="Discord" /></a>
 			</div>
 		</div>
 	</footer>
