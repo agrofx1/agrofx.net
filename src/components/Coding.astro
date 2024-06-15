@@ -1,5 +1,6 @@
 ---
-import EleventyFetch from "@11ty/eleventy-fetch";
+import { axios } from "../pages/index.astro";
+const token = import.meta.env.WAKATIME_TOKEN
 interface Language {
     name: string;
     percent: number;
@@ -10,29 +11,28 @@ interface CodingStats {
     human_readable_daily_average: string;
     languages: Array<Language>
 }
-const token = import.meta.env.WAKATIME_TOKEN
 async function fetchStats() {
-    let response = await EleventyFetch(`https://wakatime.com/api/v1/users/current/stats`, {
-            duration: "1h",
-            type: "json",
-            fetchOptions: {
-            headers: {
-                "Authorization": "Basic " + token,
-            },
+    let response = await axios.get('https://wakatime.com/api/v1/users/current/stats', {
+        id: 'wakatime',
+        cache: {
+            ttl: 1000 * 60 * 60 * 6 // 6 hours
         },
+        headers: {
+            'Authorization': 'Basic '+ token
+        }
     });
     try {
-        if (response.data) {
-            let stats: CodingStats = response.data;
+        if (response.data.data) {
+            let stats: CodingStats = response.data.data;
             let newLanguages = stats.languages.slice(0,3);
             stats.languages = newLanguages;
             return stats
         } else {
-            return { human_readable_total: "? min", human_readable_daily_average: "? min", languages: [ { name: "Javascript", text: "? min", percent: 50 } ] }
+            return { human_readable_total: "? min", human_readable_daily_average: "? min", languages: [ { name: "Javascript", text: "? min", percent: 100 } ] }
         }
     } catch (err) {
         console.log(err)
-        return { human_readable_total: "? min", human_readable_daily_average: "? min", languages: [ { name: "Javascript", text: "? min", percent: 50 } ] }
+        return { human_readable_total: "? min", human_readable_daily_average: "? min", languages: [ { name: "Javascript", text: "? min", percent: 100 } ] }
     }
     
 }

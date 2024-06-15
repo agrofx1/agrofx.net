@@ -1,24 +1,20 @@
 ---
+import { axios } from "../pages/index.astro";
+const token = import.meta.env.GITHUB_TOKEN
 interface Project {
     name?: string;
     description?:string;
     html_url?:string;
 }
-
-import EleventyFetch from "@11ty/eleventy-fetch";
-const token = import.meta.env.GITHUB_TOKEN
 async function fetchProjects() {
-    let response = await EleventyFetch(`https://api.github.com/user/repos?type=public`, {
-            duration: "1h",
-            type: "json",
-            fetchOptions: {
+    let response = await axios.get(`https://api.github.com/user/repos?type=public`, {
+            id: 'github',
             headers: {
                 "Authorization": "Bearer " + token,
             },
-        },
     });
     try {
-        let projects: Project[] = response;
+        let projects: Project[] = response.data;
         return projects
     } catch (err) {
         console.log(err)
