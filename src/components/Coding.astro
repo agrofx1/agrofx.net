@@ -1,6 +1,6 @@
 ---
 import { axios } from "../pages/index.astro";
-const token = import.meta.env.WAKATIME_TOKEN
+const token = import.meta.env.WAKATIME_TOKEN;
 interface Language {
     name: string;
     percent: number;
@@ -9,32 +9,44 @@ interface Language {
 interface CodingStats {
     human_readable_total: string;
     human_readable_daily_average: string;
-    languages: Array<Language>
+    languages: Array<Language>;
 }
 async function fetchStats() {
-    let response = await axios.get('https://wakatime.com/api/v1/users/current/stats', {
-        id: 'wakatime',
-        cache: {
-            ttl: 1000 * 60 * 60 * 6 // 6 hours
-        },
-        headers: {
-            'Authorization': 'Basic '+ token
-        }
-    });
     try {
+        let response = await axios.get(
+            "https://wakatime.com/api/v1/users/current/stats",
+            {
+                id: "wakatime",
+                cache: {
+                    ttl: 1000 * 60 * 60 * 6, // 6 hours
+                },
+                headers: {
+                    Authorization: "Basic " + token,
+                },
+            },
+        );
         if (response.data.data) {
             let stats: CodingStats = response.data.data;
-            let newLanguages = stats.languages.slice(0,3);
+            let newLanguages = stats.languages.slice(0, 3);
             stats.languages = newLanguages;
-            return stats
+            return stats;
         } else {
-            return { human_readable_total: "? min", human_readable_daily_average: "? min", languages: [ { name: "Javascript", text: "? min", percent: 100 } ] }
+            return {
+                human_readable_total: "? min",
+                human_readable_daily_average: "? min",
+                languages: [
+                    { name: "Javascript", text: "? min", percent: 100 },
+                ],
+            };
         }
     } catch (err) {
-        console.log(err)
-        return { human_readable_total: "? min", human_readable_daily_average: "? min", languages: [ { name: "Javascript", text: "? min", percent: 100 } ] }
+        // console.log(err);
+        return {
+            human_readable_total: "? min",
+            human_readable_daily_average: "? min",
+            languages: [{ name: "Javascript", text: "? min", percent: 100 }],
+        };
     }
-    
 }
 let stats = await fetchStats();
 ---
@@ -43,7 +55,13 @@ let stats = await fetchStats();
 <p>Daily average: <strong>{stats.human_readable_daily_average}</strong></p>
 <strong>Languages:</strong>
 <ul>
-    {stats.languages.map((lang) => {
-        return (<li>{lang.name}: {lang.text} ({lang.percent}%)</li>)
-    })}
+    {
+        stats.languages.map((lang) => {
+            return (
+                <li>
+                    {lang.name}: {lang.text} ({lang.percent}%)
+                </li>
+            );
+        })
+    }
 </ul>

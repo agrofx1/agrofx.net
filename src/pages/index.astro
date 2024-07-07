@@ -1,21 +1,26 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Projects from '../components/Projects.astro';
-import Coding from '../components/Coding.astro';
-import Axios from 'axios';
-import { setupCache } from 'axios-cache-interceptor';
+import Layout from "../layouts/Layout.astro";
+import Projects from "../components/Projects.astro";
+import Coding from "../components/Coding.astro";
+import Axios from "axios";
+import { setupCache } from "axios-cache-interceptor";
 
-export const instance = Axios.create(); 
-export const axios = setupCache(instance);
+export const instance = Axios.create();
+export const axios = setupCache(instance, { methods: ["get", "post"] });
 ---
 
-<Layout title="Agrofx homepage" description='The Agrofx personal website'>
+<Layout title="Agrofx homepage" description="The Agrofx personal website">
 	<header>
 		<h2>agrofx</h2>
 	</header>
 	<main>
-		<p>Hi there, I'm <strong>Agrofx</strong>. I like <strong>programming</strong> and <strong>building things</strong>.
-		Besides that, I love <strong>Open Source</strong> and the idea of <strong>free software</strong></p>
+		<p>
+			Hi there, I'm <strong>Agrofx</strong>. I like <strong
+				>programming</strong
+			> and <strong>building things</strong>. Besides that, I love <strong
+				>Open Source</strong
+			> and the idea of <strong>free software</strong>
+		</p>
 		<h2><strong>Projects</strong></h2>
 		<div class="projects__list">
 			<Projects />

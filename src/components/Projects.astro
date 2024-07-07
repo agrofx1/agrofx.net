@@ -1,32 +1,40 @@
 ---
 import { axios } from "../pages/index.astro";
-const token = import.meta.env.GITHUB_TOKEN
+const token = import.meta.env.GITHUB_TOKEN;
 interface Project {
     name?: string;
-    description?:string;
-    html_url?:string;
+    description?: string;
+    html_url?: string;
 }
 async function fetchProjects() {
-    let response = await axios.get(`https://api.github.com/user/repos?type=public`, {
-            id: 'github',
-            headers: {
-                "Authorization": "Bearer " + token,
-            },
-    });
     try {
+        let response = await axios.get(
+            `https://api.github.com/user/repos?type=public`,
+            {
+                id: "github",
+                cache: {
+                    ttl: 1000 * 60 * 60 * 6, // 6 hours
+                },
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
+            },
+        );
         let projects: Project[] = response.data;
-        return projects
+        return projects;
     } catch (err) {
-        console.log(err)
-        return []
+        // console.log(err);
+        return [];
     }
-    
 }
 let projects = await fetchProjects();
 ---
-{projects.map((project) => (
-    <div class="projects__project">
-        <a href={project.html_url}>{project.name}</a>
-        <p>{project.description}</p>
-    </div>
-))}
+
+{
+    projects.map((project) => (
+        <div class="projects__project">
+            <a href={project.html_url}>{project.name}</a>
+            <p>{project.description}</p>
+        </div>
+    ))
+}

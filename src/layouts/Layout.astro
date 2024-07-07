@@ -5,6 +5,7 @@ import { Image } from "astro:assets";
 import github from "../icons/github.svg";
 import telegram from "../icons/telegram.svg";
 import discord from "../icons/discord.svg";
+import Discord from "../components/Discord.astro";
 
 interface Props {
 	title: string;
@@ -46,7 +47,7 @@ const { title, description } = Astro.props;
 			<div class="footer__icons">
 				<a href="https://github.com/agrofx1"><Image class="footer__icon" src={github} alt="Github" /></a>
 				<a href="https://t.me/agrofxtg"><Image class="footer__icon" src={telegram} alt="Telegram" /></a>
-				<a href="https://discord.gg/bdtUgVp4"><Image class="footer__icon" src={discord} alt="Discord" /></a>
+				<Discord />
 			</div>
 		</div>
 	</footer>
