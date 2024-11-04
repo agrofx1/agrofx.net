@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@11ty/eleventy-fetch": "^4.0.1",
-    "@astrojs/check": "^0.7.0",
-    "@astrojs/node": "^8.3.0",
-    "astro": "^4.10.2",
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/node": "^8.3.4",
+    "astro": "^4.16.8",
     "axios": "^1.7.2",
     "axios-cache-interceptor": "^1.5.3",
     "typescript": "^5.4.5"
