@@ -1,67 +1,62 @@
 ---
 import { axios } from "../pages/index.astro";
+
 const token = import.meta.env.WAKATIME_TOKEN;
 interface Language {
-    name: string;
-    percent: number;
-    text: string;
+	name: string;
+	percent: number;
+	text: string;
 }
 interface CodingStats {
-    human_readable_total: string;
-    human_readable_daily_average: string;
-    languages: Array<Language>;
+	human_readable_total: string;
+	human_readable_daily_average: string;
+	languages: Array<Language>;
 }
-async function fetchStats() {
-    try {
-        let response = await axios.get(
-            "https://wakatime.com/api/v1/users/current/stats",
-            {
-                id: "wakatime",
-                cache: {
-                    ttl: 1000 * 60 * 60 * 6, // 6 hours
-                },
-                headers: {
-                    Authorization: "Basic " + token,
-                },
-            },
-        );
-        if (response.data.data) {
-            let stats: CodingStats = response.data.data;
-            let newLanguages = stats.languages.slice(0, 3);
-            stats.languages = newLanguages;
-            return stats;
-        } else {
-            return {
-                human_readable_total: "? min",
-                human_readable_daily_average: "? min",
-                languages: [
-                    { name: "Javascript", text: "? min", percent: 100 },
-                ],
-            };
-        }
-    } catch (err) {
-        // console.log(err);
-        return {
-            human_readable_total: "? min",
-            human_readable_daily_average: "? min",
-            languages: [{ name: "Javascript", text: "? min", percent: 100 }],
-        };
-    }
+async function fetchStats(): Promise<CodingStats> {
+	let response = await axios.get(
+		"https://wakatime.com/api/v1/users/current/stats",
+		{
+			id: "wakatime",
+			cache: {
+				ttl: 1000 * 60 * 60 * 6, // 6 hours
+			},
+			headers: {
+				Authorization: "Basic " + token,
+			},
+		}
+	);
+	if (response.data.errors === undefined) {
+		let stats: CodingStats = response.data.data;
+		let newLanguages = stats.languages.slice(0, 3);
+		stats.languages = newLanguages;
+		return stats;
+	}
+	throw new Error("Failed to obtain wakatime stats");
 }
-let stats = await fetchStats();
----
+let stats: CodingStats = {human_readable_total: "0 min", human_readable_daily_average: "0 min", languages: [{name: 'TypeScript', percent: 100, text: '? min'}]};
+let isSuccess: boolean;
 
+try {
+	stats = await fetchStats();
+	isSuccess = true;
+} catch {
+	isSuccess = false;
+}
+---
+{isSuccess && 
+<h2><strong>Coding statistic (last 7 days)</strong></h2>
 <p>Last 7 days: <strong>{stats.human_readable_total}</strong></p>
 <p>Daily average: <strong>{stats.human_readable_daily_average}</strong></p>
 <strong>Languages:</strong>
 <ul>
-    {
-        stats.languages.map((lang) => {
-            return (
-                <li>
-                    {lang.name}: {lang.text} ({lang.percent}%)
-                </li>
-            );
-        })
-    }
+	{
+		stats.languages.map((lang) => {
+			return (
+				<li>
+					{lang.name}: {lang.text} ({lang.percent}%)
+				</li>
+			);
+		})
+	}
 </ul>
+}

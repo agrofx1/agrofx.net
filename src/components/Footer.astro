@@ -1,0 +1,74 @@
+---
+import { axios } from "../pages/index.astro";
+import { Image } from "astro:assets";
+import github from "../icons/github.svg";
+import telegram from "../icons/telegram.svg";
+import discord from "../icons/discord.svg";
+
+const token = import.meta.env.DISCORD_TOKEN;
+
+interface Invite {
+	code: string;
+}
+async function fetchCode(): Promise<string> {
+	let response = await axios.post(
+		"https://discord.com/api/v9/users/@me/invites",
+		"{}",
+		{
+			id: "discord",
+			cache: {
+				ttl: 1000 * 60 * 60 * 24 * 6, // 6 days
+			},
+			headers: {
+				Authorization: token,
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	const data: Invite = response.data;
+	if (typeof data.code === "string") {
+		return data.code;
+	}
+	throw new Error("Failed to obtain discord friend link");
+}
+let isSuccess: boolean;
+let code: string = "";
+
+try {
+	code = await fetchCode();
+	isSuccess = true;
+} catch {
+	isSuccess = false;
+}
+---
+
+<script is:inline>
+	const alertInvite = () => {
+		alert("Add me to the discord through my username: agrofx");
+	};
+</script>
+<footer>
+	<hr />
+	<div class="footer__content">
+		<h4>Agrofx</h4>
+		<div class="footer__icons">
+			<a href="https://github.com/agrofx1"
+				><Image class="footer__icon" src={github} alt="Github" /></a
+			>
+			<a href="https://t.me/agrofxtg"
+				><Image class="footer__icon" src={telegram} alt="Telegram" /></a
+			>
+			{
+				isSuccess ? (
+					<a href={"https://discord.gg/" + code}>
+						<Image class="footer__icon" src={discord} alt="Discord" />
+					</a>
+				) : (
+					<a href="#" onclick="alertInvite()">
+						<Image class="footer__icon" src={discord} alt="Discord" />
+					</a>
+				)
+			}
+		</div>
+	</div>
+</footer>

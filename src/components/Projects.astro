@@ -1,5 +1,6 @@
 ---
 import { axios } from "../pages/index.astro";
+
 const token = import.meta.env.GITHUB_TOKEN;
 interface Project {
     name?: string;
@@ -7,34 +8,46 @@ interface Project {
     html_url?: string;
 }
 async function fetchProjects() {
-    try {
-        let response = await axios.get(
-            `https://api.github.com/user/repos?type=public`,
-            {
-                id: "github",
-                cache: {
-                    ttl: 1000 * 60 * 60 * 6, // 6 hours
-                },
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
+    let response = await axios.get(
+        `https://api.github.com/user/repos?type=public`,
+        {
+            id: "github",
+            cache: {
+                ttl: 1000 * 60 * 60 * 6, // 6 hours
             },
-        );
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        },
+    );
+    if (typeof response.data == "object") {
         let projects: Project[] = response.data;
         return projects;
-    } catch (err) {
-        // console.log(err);
-        return [];
     }
+    throw new Error('Failed to obtain public github repos')
 }
-let projects = await fetchProjects();
----
+let projects: Project[] = [];
+let isSuccess: boolean;
 
-{
-    projects.map((project) => (
-        <div class="projects__project">
-            <a href={project.html_url}>{project.name}</a>
-            <p>{project.description}</p>
-        </div>
-    ))
+try {
+    projects = await fetchProjects();
+    isSuccess = true;
+} catch {
+    isSuccess = false;
 }
+---
+{isSuccess && <h2><strong>Projects</strong></h2>
+    <div class="projects__list">
+        {
+            projects.map((project) => (
+                <div class="projects__project">
+                    <a href={project.html_url}>{project.name}</a>
+                    <p>{project.description}</p>
+                </div>
+            ))
+        }
+    </div>
+}
+
+</div>
+
