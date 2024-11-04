@@ -53,19 +53,39 @@ try {
 		<h4>Agrofx</h4>
 		<div class="footer__icons">
 			<a href="https://github.com/agrofx1"
-				><Image class="footer__icon" src={github} alt="Github" /></a
+				><Image
+					class="footer__icon"
+					src={github}
+					alt="Github"
+					loading="eager"
+				/></a
 			>
 			<a href="https://t.me/agrofxtg"
-				><Image class="footer__icon" src={telegram} alt="Telegram" /></a
+				><Image
+					class="footer__icon"
+					src={telegram}
+					alt="Telegram"
+					loading="eager"
+				/></a
 			>
 			{
 				isSuccess ? (
 					<a href={"https://discord.gg/" + code}>
-						<Image class="footer__icon" src={discord} alt="Discord" />
+						<Image
+							class="footer__icon"
+							src={discord}
+							alt="Discord"
+							loading="eager"
+						/>
 					</a>
 				) : (
 					<a href="#" onclick="alertInvite()">
-						<Image class="footer__icon" src={discord} alt="Discord" />
+						<Image
+							class="footer__icon"
+							src={discord}
+							alt="Discord"
+							loading="eager"
+						/>
 					</a>
 				)
 			}
