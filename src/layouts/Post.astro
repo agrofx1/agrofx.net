@@ -1,0 +1,38 @@
+---
+import Footer from "../components/Footer.astro";
+import Share from "../components/Share.astro";
+
+const { frontmatter } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<!-- meta -->
+		<meta charset="UTF-8" />
+		<meta name="description" content={frontmatter.description} />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<!-- open graph -->
+		<meta property="og:title" content={frontmatter.title} />
+		<meta property="og:site_name" content="Agrofx" />
+		<meta property="og:url" content="https://agrofx.net/" />
+		<meta property="og:image" content="https://agrofx.net/" />
+		<!-- style -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<!-- icon -->
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<title>{frontmatter.title}</title>
+	</head>
+	<body>
+		<div class="post__title">
+			<h1>{frontmatter.title}</h1><Share />
+		</div>
+		<hr />
+		<slot />
+		<Footer />
+	</body>
+</html>

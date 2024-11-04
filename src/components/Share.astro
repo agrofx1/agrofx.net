@@ -1,0 +1,20 @@
+---
+import share from "../icons/share.svg";
+import { Image } from "astro:assets";
+---
+
+<Image
+	class="post__share"
+	src={share}
+	alt="Share"
+	loading="eager"
+	onclick="share()"
+/>
+<script is:inline>
+	async function share() {
+		await navigator.share({
+			title: document.title,
+			url: window.location.toString(),
+		});
+	}
+</script>
