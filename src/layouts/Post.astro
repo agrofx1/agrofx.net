@@ -27,7 +27,7 @@ const { frontmatter } = Astro.props;
 		<link rel="manifest" href="/site.webmanifest" />
 		<title>{frontmatter.title}</title>
 	</head>
-	<body>
+	<body class="post__page">
 		<div class="post__title">
 			<h1>{frontmatter.title}</h1><Share />
 		</div>
