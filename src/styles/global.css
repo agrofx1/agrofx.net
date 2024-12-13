@@ -4,7 +4,7 @@ body {
 	margin-inline: auto;
 	background-color: #171717;
 	color: #d4d4d4;
-	font-family: "Switzer Light";
+	font-family: "Inter Light";
 	max-width: 600px;
 	padding: 20px;
 }
@@ -15,7 +15,7 @@ header {
 	color: #737373;
 }
 strong {
-	font-family: "Switzer Medium";
+	font-family: "Inter Medium";
 }
 .header__buttons {
 	display: flex;
@@ -31,7 +31,7 @@ strong {
 	grid-template-rows: 50% 50%;
 }
 .projects__project {
-	font-family: "Switzer Medium";
+	font-family: "Inter Medium";
 }
 main a {
 	color: #d4d4d4;
@@ -45,13 +45,13 @@ main a:hover {
 	border-bottom: 1px solid #d4d4d4;
 }
 .projects__project p {
-	font-family: "Switzer Regular";
+	font-family: "Inter Regular";
 }
 .footer__content {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	font-family: "Switzer Light";
+	font-family: "Inter Light";
 }
 .footer__icons {
 	display: flex;
